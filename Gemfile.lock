@@ -108,6 +108,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    vcr (2.9.3)
 
 PLATFORMS
   ruby
@@ -125,3 +126,4 @@ DEPENDENCIES
   rubocop
   simplecov
   simplecov-html
+  vcr
