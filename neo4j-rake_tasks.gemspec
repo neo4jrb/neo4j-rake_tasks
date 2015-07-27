@@ -37,8 +37,9 @@ DESCRIPTION
     '--inline-source']
 
   s.add_dependency('colored')
+  s.add_dependency('httparty')
 
-  s.add_development_dependency('vcr')
+  #s.add_development_dependency('vcr')
   s.add_development_dependency('pry')
   s.add_development_dependency('simplecov')
   s.add_development_dependency('guard')

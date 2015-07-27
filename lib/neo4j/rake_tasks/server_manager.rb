@@ -1,4 +1,5 @@
 require 'pathname'
+require 'httparty'
 
 module Neo4j
   module RakeTasks
@@ -19,7 +20,7 @@ module Neo4j
 
         return false if neo4j_binary_path.exist?
 
-        archive_path = download_neo4j(version) unless File.exist?(file_name)
+        archive_path = download_neo4j(version)
         extract!(archive_path)
 
         FileUtils.rm archive_path
