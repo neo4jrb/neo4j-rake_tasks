@@ -30,6 +30,8 @@ namespace :neo4j do
 
   desc 'Install Neo4j with auth disabled in v2.2+'
   task :install, :edition, :environment do |_, args|
+    args.with_default_arguments(edition: 'community-latest', environment: 'development')
+
     puts "Install Neo4j (#{args[:environment]} environment)..."
 
     server_manager = server_manager(server_path(args[:environment]))
