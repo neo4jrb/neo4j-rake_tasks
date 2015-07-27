@@ -48,9 +48,14 @@ module Neo4j
 
       def install(server_manager, edition = 'community-latest')
         tempfile = Tempfile.new("neo4j-#{edition}")
-        FileUtils.cp('spec/files/neo4j-community-2.2.3-unix.tar.gz', tempfile.path)
-        expect(server_manager).to receive(:download_neo4j).and_return(tempfile.path)
-        expect(server_manager).to receive(:version_from_edition).and_return('community-2.2.3')
+
+        neo4j_archive = 'spec/files/neo4j-community-2.2.3-unix.tar.gz'
+        FileUtils.cp(neo4j_archive, tempfile.path)
+
+        expect(server_manager)
+          .to receive(:download_neo4j).and_return(tempfile.path)
+        expect(server_manager)
+          .to receive(:version_from_edition).and_return('community-2.2.3')
 
         # VCR.use_cassette('neo4j-install') do
         server_manager.install(edition)
@@ -132,7 +137,8 @@ module Neo4j
           let(:port) { 7470 }
 
           it 'should configure the port' do
-            expect { open_session(7474) }.to raise_error Faraday::ConnectionFailed
+            expect { open_session(7474) }
+              .to raise_error Faraday::ConnectionFailed
 
             expect { open_session(port) }.not_to raise_error
           end

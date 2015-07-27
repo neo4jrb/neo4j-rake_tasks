@@ -42,7 +42,7 @@ DESCRIPTION
   s.add_dependency('os')
   s.add_dependency('zip')
 
-  #s.add_development_dependency('vcr')
+  # s.add_development_dependency('vcr')
   s.add_development_dependency('pry')
   s.add_development_dependency('simplecov')
   s.add_development_dependency('guard')
