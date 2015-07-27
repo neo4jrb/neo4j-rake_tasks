@@ -1,9 +1,12 @@
 PATH
   remote: .
   specs:
-    neo4j-rake_tasks (0.0.2)
+    neo4j-rake_tasks (0.0.3)
       colored
       httparty
+      os
+      rake
+      zip
 
 GEM
   remote: https://rubygems.org/
