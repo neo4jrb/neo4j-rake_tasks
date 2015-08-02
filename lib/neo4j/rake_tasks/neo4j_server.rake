@@ -34,7 +34,7 @@ namespace :neo4j do
     server_manager = server_manager(args[:environment])
     server_manager.install(args[:edition])
     if edition_supports_auth?(args[:edition])
-      server_manage.config_auth_enabeled!(false)
+      server_manager.config_auth_enabeled!(false)
     end
 
     puts 'To start it type one of the following:'
