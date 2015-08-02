@@ -5,6 +5,7 @@ require 'httparty'
 require 'zip'
 require 'httparty'
 require 'pathname'
+require 'colored'
 require File.expand_path('../windows_server_manager', __FILE__)
 require File.expand_path('../starnix_server_manager', __FILE__)
 
@@ -38,10 +39,10 @@ namespace :neo4j do
     end
 
     puts 'To start it type one of the following:'
-    puts '  rake neo4j:start'.blue
-    puts '  rake neo4j:start[ENVIRONMENT]'.blue
+    puts '  rake neo4j:start'.cyan
+    puts '  rake neo4j:start[ENVIRONMENT]'.cyan
     puts 'To change the server port (default is 7474) type:'
-    puts '  neo4j:config[ENVIRONMENT,PORT]'.blue
+    puts '  neo4j:config[ENVIRONMENT,PORT]'.cyan
   end
 
   desc 'Start the Neo4j Server'
