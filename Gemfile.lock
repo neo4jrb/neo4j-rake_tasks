@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    neo4j-rake_tasks (0.0.5)
+    neo4j-rake_tasks (0.0.6)
       colored
       httparty
       os
