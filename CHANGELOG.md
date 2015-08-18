@@ -6,3 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 - Nothing yet, placeholder
 
+## [0.0.8] - 08-17-2015
+
+### Fixed
+
+- Lack of an explicit `require 'rake'` could cause errors in projects using this gem.
+
+## [0.0.1]-[0.0.7]
+- Early releases. Moved tasks from `neo4j-core` gem, refactored.
