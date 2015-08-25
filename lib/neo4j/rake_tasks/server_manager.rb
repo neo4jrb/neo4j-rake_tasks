@@ -57,11 +57,11 @@ module Neo4j
 
         delete_path = @path.join('data/graph.db/*')
         puts "Deleting all files matching #{delete_path}"
-        FileUtils.rm_rf(Dir.glob(@path.join(delete_path)))
+        FileUtils.rm_rf(Dir.glob(delete_path))
 
         delete_path = @path.join('data/log/*')
         puts "Deleting all files matching #{delete_path}"
-        FileUtils.rm_rf(Dir.glob(@path.join(delete_path)))
+        FileUtils.rm_rf(Dir.glob(delete_path))
 
         start
       end
