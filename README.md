@@ -84,3 +84,20 @@ The ``neo4j-rake_tasks`` gem (automatically included with the ``neo4j`` gem) inc
   Stop the Neo4j server
 
 
+## neo4j:reset_yes_i_am_sure
+
+### Arguments
+
+``environment``
+
+### Example
+
+``rake neo4j:reset_yes_i_am_sure[development]``
+
+### Description
+
+  - Stop the Neo4j server
+  - Deletes all files matching `[db-root]/data/graph.db/*`
+  - Deletes all files matching `[db-root]/data/log/*`
+  - Start the Neo4j server
+

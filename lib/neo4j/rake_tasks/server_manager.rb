@@ -55,8 +55,13 @@ module Neo4j
 
         stop
 
-        FileUtils.rm_rf(@path.join('data/graph.db/*'))
-        FileUtils.rm_rf(@path.join('data/log/*'))
+        delete_path = @path.join('data/graph.db/*')
+        puts "Deleting all files matching #{delete_path}"
+        FileUtils.rm_rf(Dir.glob(@path.join(delete_path)))
+
+        delete_path = @path.join('data/log/*')
+        puts "Deleting all files matching #{delete_path}"
+        FileUtils.rm_rf(Dir.glob(@path.join(delete_path)))
 
         start
       end
