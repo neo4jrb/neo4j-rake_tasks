@@ -107,6 +107,8 @@ namespace :neo4j do
   task :reset_yes_i_am_sure, :environment do |_, args|
     args.with_defaults(environment: :development)
 
+    puts "Resetting Neo4j in #{args[:environment]}..."
+
     server_manager = server_manager(args[:environment])
     server_manager.reset
   end
