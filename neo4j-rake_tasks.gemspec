@@ -40,7 +40,7 @@ DESCRIPTION
   s.add_dependency('httparty')
   s.add_dependency('rake')
   s.add_dependency('os')
-  s.add_dependency('zip')
+  s.add_dependency('rubyzip', '~> 1.1.7')
 
   # s.add_development_dependency('vcr')
   s.add_development_dependency('pry')

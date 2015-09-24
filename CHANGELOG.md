@@ -4,6 +4,9 @@ This file should follow the standards specified on [http://keepachangelog.com/]
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.1.0] - 09-24-2015
+- Use rubyzip rather than zip
 - Fix `rake neo4j:reset_yes_i_am_sure` not actually resetting the db
 
 ## [0.0.8] - 08-17-2015

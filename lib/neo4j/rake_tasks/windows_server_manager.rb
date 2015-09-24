@@ -34,7 +34,7 @@ module Neo4j
           f_path = @path.join(file.name)
           FileUtils.mkdir_p(File.dirname(f_path))
           begin
-            zip_file.extract(file, f_path) unless File.exist?(f_path)
+            file.extract(f_path) unless File.exist?(f_path)
           rescue
             puts "#{file.name} failed to extract."
           end
@@ -48,7 +48,7 @@ module Neo4j
       private
 
       def each_file_in_zip(zip_path)
-        Zip::ZipFile.open(zip_path) do |zip_file|
+        Zip::File.open(zip_path) do |zip_file|
           zip_file.each do |file|
             yield file
           end
