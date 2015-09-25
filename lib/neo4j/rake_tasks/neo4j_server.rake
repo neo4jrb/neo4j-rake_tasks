@@ -63,6 +63,15 @@ namespace :neo4j do
     server_manager.start(false)
   end
 
+  desc 'Start the Neo4j Server in the foreground'
+  task :console, :environment do |_, args|
+    args.with_defaults(environment: :development)
+
+    puts "Starting Neo4j (foreground) in #{args[:environment]}..."
+    server_manager = server_manager(args[:environment])
+    server_manager.console
+  end
+
   desc 'Configure Server, e.g. rake neo4j:config[development,8888]'
   task :config, :environment, :port do |_, args|
     args.with_defaults(environment: :development)
