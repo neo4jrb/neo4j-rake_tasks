@@ -38,6 +38,10 @@ module Neo4j
         system_or_fail(neo4j_command_path(:stop))
       end
 
+      def console
+        system_or_fail(neo4j_command_path(:console))
+      end
+
       def info
         validate_is_system_admin!
 
