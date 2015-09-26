@@ -5,8 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.2.0] - 09-27-2015
+
+### Added
+- Added `console` task (thanks to darrin-wortlehock via #13)
+
 ## [0.1.0] - 09-24-2015
+
+### Changed
 - Use rubyzip rather than zip
+
+### Fixed
 - Fix `rake neo4j:reset_yes_i_am_sure` not actually resetting the db
 
 ## [0.0.8] - 08-17-2015
