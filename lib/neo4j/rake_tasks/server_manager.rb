@@ -40,6 +40,16 @@ module Neo4j
         system_or_fail(neo4j_command_path(:console))
       end
 
+      def shell
+        not_started = !@path.join('data/neo4j-service.pid').exist?
+
+        start if not_started
+
+        system_or_fail(neo4j_shell_binary_path.to_s)
+
+        stop if not_started
+      end
+
       def info
         validate_is_system_admin!
 
@@ -135,6 +145,10 @@ module Neo4j
 
       def neo4j_command_path(command)
         neo4j_binary_path.to_s + " #{command}"
+      end
+
+      def neo4j_shell_binary_path
+        binary_command_path(neo4j_shell_binary_filename)
       end
 
       def property_configuration_path

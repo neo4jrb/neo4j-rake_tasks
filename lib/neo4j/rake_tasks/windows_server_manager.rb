@@ -8,6 +8,10 @@ module Neo4j
         'Neo4j.bat'
       end
 
+      def neo4j_shell_binary_filename
+        'Neo4jShell.bat'
+      end
+
       def install
         super
 

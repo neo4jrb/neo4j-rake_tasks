@@ -8,6 +8,10 @@ module Neo4j
         'neo4j'
       end
 
+      def neo4j_shell_binary_filename
+        'neo4j-shell'
+      end
+
       protected
 
       def extract!(zip_path)

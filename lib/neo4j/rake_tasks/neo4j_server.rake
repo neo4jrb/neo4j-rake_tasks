@@ -72,6 +72,15 @@ namespace :neo4j do
     server_manager.console
   end
 
+  desc 'Open Neo4j REPL Shell'
+  task :shell, :environment do |_, args|
+    args.with_defaults(environment: :development)
+
+    puts "Starting Neo4j shell in #{args[:environment]}..."
+    server_manager = server_manager(args[:environment])
+    server_manager.shell
+  end
+
   desc 'Configure Server, e.g. rake neo4j:config[development,8888]'
   task :config, :environment, :port do |_, args|
     args.with_defaults(environment: :development)
