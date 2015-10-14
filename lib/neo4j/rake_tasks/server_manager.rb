@@ -5,8 +5,6 @@ module Neo4j
   module RakeTasks
     # Represents and manages a server installation at a specific path
     class ServerManager
-      BASE_INSTALL_DIR = Pathname.new('db/neo4j')
-
       def initialize(path)
         @path = Pathname.new(path)
         FileUtils.mkdir_p(@path)
