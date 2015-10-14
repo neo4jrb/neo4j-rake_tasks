@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.3.0] - 09-27-2015
+
+### Added
+- Add `shell` rake task.  Start Neo4j if it is not already started (and stop afterward)
+
 ## [0.2.0] - 09-27-2015
 
 ### Added
