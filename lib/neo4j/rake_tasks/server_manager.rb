@@ -170,7 +170,7 @@ module Neo4j
 
           version = neo4j_versions[$1]
 
-          fail "Invalid version identifier: #{$1}" if !neo4j_versions.has_key?($1)
+          fail "Invalid version identifier: #{$1}" if !neo4j_versions.key?($1)
           fail "There is not currently a version for #{$1}" if version.nil?
 
           puts "#{$1.capitalize} version is: #{version}"
