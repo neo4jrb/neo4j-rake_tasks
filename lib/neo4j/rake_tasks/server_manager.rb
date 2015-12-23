@@ -164,18 +164,31 @@ module Neo4j
           fail("Unable to run: #{command}")
       end
 
-      NEO4J_LATEST_URL = 'https://api.github.com/repos/neo4j/neo4j/releases/latest'
       def version_from_edition(edition_string)
-        edition_string.gsub(/-latest$/) do
-          require 'open-uri'
-          puts 'Retrieving latest version...'
-          latest_version = JSON.parse(open(NEO4J_LATEST_URL).read)['tag_name']
-          puts "Latest version is: #{latest_version}"
-          "-#{latest_version}"
+        edition_string.downcase.gsub(/-([a-z\-]+)$/) do
+          puts "Retrieving #{$1} version..."
+
+          version = neo4j_versions[$1]
+
+          fail "Invalid version identifier: #{$1}" if !neo4j_versions.has_key?($1)
+          fail "There is not currently a version for #{$1}" if version.nil?
+
+          puts "#{$1.capitalize} version is: #{version}"
+
+          "-#{version}"
         end
       end
 
       private
+
+      NEO4J_VERSIONS_URL = 'https://raw.githubusercontent.com/neo4jrb/neo4j-rake_tasks/master/neo4j_versions.yml'
+
+      def neo4j_versions
+        require 'open-uri'
+        require 'yaml'
+
+        YAML.load(open(NEO4J_VERSIONS_URL).read)
+      end
 
       def download_neo4j(version)
         tempfile = Tempfile.open('neo4j-download', encoding: 'ASCII-8BIT')
