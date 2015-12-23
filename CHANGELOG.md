@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+### Added
+
+- In addition to ability to `community-latest`, added ability to install `community-(stable|rc|release-candidate|milestone)` as defined in config
+
 ## [0.3.0] - 09-27-2015
 
 ### Added
