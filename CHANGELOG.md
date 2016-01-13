@@ -5,9 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.4.0] - 01-13-2016
+
 ### Added
 
 - In addition to ability to `community-latest`, added ability to install `community-(stable|rc|release-candidate|milestone)` as defined in config
+- Ability to give an argument to `ServerManager#stop` with a timeout to force shutdown
 
 ## [0.3.0] - 09-27-2015
 

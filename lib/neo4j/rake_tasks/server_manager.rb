@@ -27,13 +27,20 @@ module Neo4j
       end
 
       def start(wait = true)
-        system_or_fail(neo4j_command_path(start_argument(wait)))
+        system_or_fail(neo4j_command_path(start_argument(wait))).tap do
+          @pid = pid_path.read.to_i
+        end
       end
 
-      def stop
+      def stop(timeout = nil)
         validate_is_system_admin!
 
-        system_or_fail(neo4j_command_path(:stop))
+        Timeout.timeout(timeout) do
+          system_or_fail(neo4j_command_path(:stop))
+        end
+      rescue Timeout::Error
+        puts 'Shutdown timeout reached, killing process...'
+        Process.kill('KILL', @pid) if @pid
       end
 
       def console
@@ -41,7 +48,7 @@ module Neo4j
       end
 
       def shell
-        not_started = !@path.join('data/neo4j-service.pid').exist?
+        not_started = !pid_path.exist?
 
         start if not_started
 
@@ -177,6 +184,10 @@ module Neo4j
 
           "-#{version}"
         end
+      end
+
+      def pid_path
+        @path.join('data/neo4j-service.pid')
       end
 
       private
