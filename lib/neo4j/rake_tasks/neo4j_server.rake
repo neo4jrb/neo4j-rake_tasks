@@ -101,7 +101,7 @@ namespace :neo4j do
     server_manager.stop
   end
 
-  desc 'Get info the Neo4j Server'
+  desc 'Get info for the Neo4j Server'
   task :info, :environment do |_, args|
     args.with_defaults(environment: :development)
 
