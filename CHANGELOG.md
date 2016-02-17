@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.4.2] - 02-17-2016
+
+### Fixed
+
+- Matching variables / values in `properties` (see #21, thanks to bobmazanec)
+- Default port in config task to 7474
+
 ## [0.4.0] - 01-13-2016
 
 ### Added
