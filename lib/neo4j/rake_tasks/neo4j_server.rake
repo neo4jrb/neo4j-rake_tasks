@@ -83,7 +83,8 @@ namespace :neo4j do
 
   desc 'Configure Server, e.g. rake neo4j:config[development,8888]'
   task :config, :environment, :port do |_, args|
-    args.with_defaults(environment: :development)
+    args.with_defaults(environment: :development, port: 7474)
+
 
     puts "Config Neo4j in #{args[:environment]}"
 
