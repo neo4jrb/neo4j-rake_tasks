@@ -122,7 +122,7 @@ module Neo4j
 
         File.open(property_configuration_path, 'w') do |file|
           result = properties.inject(contents) do |r, (property, value)|
-            r.gsub(/#{property}\s*=\s*(\w+)/, "#{property}=#{value}")
+            r.gsub(/#{property}\s*=\s*(.+)/, "#{property}=#{value}")
           end
           file << result
         end
