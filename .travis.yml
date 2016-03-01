@@ -1,0 +1,7 @@
+script: "./release_if_new.rb"
+language: ruby
+cache: bundler
+sudo: false
+rvm:
+  - 2.3.0
+
