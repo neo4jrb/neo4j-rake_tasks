@@ -6,7 +6,7 @@ LOGGER = Logger.new(STDOUT)
 
 gemspec_files = Dir.glob('*.gemspec')
 
-fail 'Too many gemspecs!' if gemspecs.size > 1
+fail 'Too many gemspecs!' if gemspec_files.size > 1
 
 gemspec_file = gemspec_files.first
 gem_name = File.basename(gemspec_file, '.*')
