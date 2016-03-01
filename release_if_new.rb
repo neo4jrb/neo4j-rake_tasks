@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require 'logger'
+require 'rubygems'
 
 LOGGER = Logger.new(STDOUT)
 
