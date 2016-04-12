@@ -132,14 +132,14 @@ namespace :neo4j do
     server_manager.reset
   end
 
-  desc 'Neo4j 2.2: Change connection password'
+  desc 'Neo4j 2.2+: Change connection password'
   task :change_password do |_, _args|
     # Maybe we should take the environment as an arg and
     # find the port in the config file?
     server_manager_class.change_password!
   end
 
-  desc 'Neo4j 2.2: Enable Auth'
+  desc 'Neo4j 2.2+: Enable Auth'
   task :enable_auth, :environment do |_, args|
     args.with_defaults(environment: :development)
 
@@ -149,7 +149,7 @@ namespace :neo4j do
     puts 'Neo4j basic authentication enabled. Restart server to apply.'
   end
 
-  desc 'Neo4j 2.2: Disable Auth'
+  desc 'Neo4j 2.2+: Disable Auth'
   task :disable_auth, :environment do |_, args|
     args.with_defaults(environment: :development)
 
