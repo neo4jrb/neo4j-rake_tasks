@@ -1,7 +1,7 @@
 ---
-  stable: &stable '2.3.2'
-  milestone: 3.0.0-M02
-  rc: &rc null
+  stable: &stable '2.3.3'
+  milestone: null
+  rc: &rc 3.0.0-RC1
 
   # aliases
   latest: *stable
