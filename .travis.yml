@@ -1,4 +1,4 @@
-script: "./release_if_new.rb"
+script: bundle exec rake
 language: ruby
 cache: bundler
 sudo: false
