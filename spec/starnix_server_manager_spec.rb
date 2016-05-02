@@ -94,6 +94,8 @@ module Neo4j
 
           pid = pidfile_path.read.to_i
           expect(Process.kill(0, pid)).to be 1
+
+          server_manager.stop
         end
       end
 
@@ -130,6 +132,8 @@ module Neo4j
           expect do
             server_manager.reset
           end.to change { open_session(neo4j_port).query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
+
+          server_manager.stop
         end
       end
 
@@ -151,6 +155,8 @@ module Neo4j
               .to raise_error Faraday::ConnectionFailed
 
             expect { open_session(neo4j_port) }.not_to raise_error
+
+            server_manager.stop
           end
         end
       end
