@@ -127,7 +127,7 @@ module Neo4j
         end
 
         it 'should wipe out the data' do
-          neo4j_session.query("CREATE (:User {name: 'Bob'})")
+          open_session(neo4j_port).query("CREATE (:User {name: 'Bob'})")
 
           expect do
             server_manager.reset
