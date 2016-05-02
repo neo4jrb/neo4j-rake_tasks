@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'pathname'
 require 'fileutils'
 require 'neo4j-core'
+require 'open-uri'
 
 require 'neo4j/rake_tasks/starnix_server_manager'
 
@@ -13,7 +14,18 @@ module Neo4j
       let(:path) { BASE_PATHNAME.join('tmp', 'db') }
       let(:pidfile_path) { path.join('data', 'neo4j-service.pid') }
 
+      def server_up(port)
+        open("http://localhost:#{port}/browser/")
+        true
+      rescue Errno::ECONNREFUSED
+        false
+      end
+
       before(:each) do
+        if server_up(neo4j_port)
+          fail "There is a server already running on port #{neo4j_port}.  Can't run spec"
+        end
+
         if path.exist?
           message = 'DB temporary directory already exists! '
           message += "Delete #{path} if safe to do so and then proceed"
