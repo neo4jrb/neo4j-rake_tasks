@@ -129,7 +129,7 @@ module Neo4j
 
           expect do
             server_manager.reset
-          end.to change { neo4j_session.query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
+          end.to change { open_session(neo4j_port).query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
         end
       end
 
@@ -138,19 +138,19 @@ module Neo4j
           install(server_manager)
 
           server_manager.config_auth_enabeled!(false)
-          server_manager.config_port!(port)
+          server_manager.config_port!(neo4j_port)
 
           server_manager.start
         end
 
         context 'port 7470' do
-          let(:port) { 7470 }
+          let(:neo4j_port) { 7470 }
 
           it 'should configure the port' do
             expect { open_session(7474) }
               .to raise_error Faraday::ConnectionFailed
 
-            expect { open_session(port) }.not_to raise_error
+            expect { open_session(neo4j_port) }.not_to raise_error
           end
         end
       end
