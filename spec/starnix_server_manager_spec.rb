@@ -127,11 +127,9 @@ module Neo4j
         it 'should wipe out the data' do
           neo4j_session.query("CREATE (:User {name: 'Bob'})")
 
-          expect(neo4j_session.query(u: :User).count).to be 1
-
-          server_manager.reset
-
-          expect(neo4j_session.query(u: :User).count).to be 0
+          expect do
+            server_manager.reset
+          end.to change { neo4j_session.query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
         end
       end
 
