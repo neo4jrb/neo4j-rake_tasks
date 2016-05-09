@@ -12,151 +12,183 @@ module Neo4j
   module RakeTasks
     describe StarnixServerManager, vcr: true do
       let(:path) { BASE_PATHNAME.join('tmp', 'db') }
-      let(:pidfile_path) { path.join('data', 'neo4j-service.pid') }
-
-      def server_up(port)
-        open("http://localhost:#{port}/browser/")
-        true
-      rescue Errno::ECONNREFUSED
-        false
-      end
-
-      before(:each) do
-        if server_up(neo4j_port)
-          fail "There is a server already running on port #{neo4j_port}.  Can't run spec"
-        end
-
-        if path.exist?
-          message = 'DB temporary directory already exists! '
-          message += "Delete #{path} if safe to do so and then proceed"
-
-          fail message
-        end
-      end
-
-      after(:each) do
-        pid_path = path.join('data', 'neo4j-service.pid')
-        if pid_path.exist?
-          pid = pid_path.read.to_i
-          Process.kill('TERM', pid)
-          begin
-            sleep(1) while Process.kill(0, pid)
-          rescue Errno::ESRCH
-            nil
-          end
-        end
-        path.rmtree
-      end
 
       let(:server_manager) { StarnixServerManager.new(path) }
 
-      let(:neo4j_port) { 7474 }
+      describe '#modify_config_contents' do
+        subject { server_manager.modify_config_contents(contents, properties) }
 
-      def open_session(port)
-        Neo4j::Session.open(:server_db, "http://localhost:#{port}")
-      end
+        let_context properties: {prop: 2} do
+          let_context(contents: 'prop=1') { it { should eq('prop=2') } }
+          let_context(contents: 'prop =1') { it { should eq('prop=2') } }
+          let_context(contents: 'prop= 1') { it { should eq('prop=2') } }
+          let_context(contents: 'prop = 1') { it { should eq('prop=2') } }
 
-      let(:neo4j_session) { open_session(neo4j_port) }
+          let_context(contents: " prop = 1 \n") { it { should eq("prop=2\n") } }
 
-      def install(server_manager, edition = 'community-latest')
-        tempfile = Tempfile.new("neo4j-#{edition}")
+          let_context(contents: "foo=5\n prop = 1 \nbar=6") { it { should eq("foo=5\nprop=2\nbar=6") } }
 
-        neo4j_archive = 'spec/files/neo4j-community-2.2.3-unix.tar.gz'
-        FileUtils.cp(neo4j_archive, tempfile.path)
+          let_context(contents: '#prop=1') { it { should eq('prop=2') } }
+          let_context(contents: ' #prop=1') { it { should eq('prop=2') } }
+          let_context(contents: '# prop=1') { it { should eq('prop=2') } }
+          let_context(contents: ' # prop=1') { it { should eq('prop=2') } }
+          let_context(contents: "foo=5\n # prop=1\nbar=6") { it { should eq("foo=5\nprop=2\nbar=6") } }
+        end
 
-        expect(server_manager)
-          .to receive(:download_neo4j).and_return(tempfile.path)
-        expect(server_manager)
-          .to receive(:version_from_edition).and_return('community-2.2.3')
+        let_context contents: 'prop=false' do
+          let_context(properties: {prop: true}) { it { should eq('prop=true') } }
+        end
 
-        # VCR.use_cassette('neo4j-install') do
-        server_manager.install(edition)
-        # end
-      end
-
-      describe '#install' do
-        it 'should install' do
-          install(server_manager)
+        let_context contents: 'prop=true' do
+          let_context(properties: {prop: false}) { it { should eq('prop=false') } }
         end
       end
 
-      describe '#start' do
+      describe 'server commands' do
+        let(:pidfile_path) { path.join('data', 'neo4j-service.pid') }
+
+        def server_up(port)
+          open("http://localhost:#{port}/browser/")
+          true
+        rescue Errno::ECONNREFUSED
+          false
+        end
+
         before(:each) do
-          install(server_manager)
+          if server_up(neo4j_port)
+            fail "There is a server already running on port #{neo4j_port}.  Can't run spec"
+          end
+
+          if path.exist?
+            message = 'DB temporary directory already exists! '
+            message += "Delete #{path} if safe to do so and then proceed"
+
+            fail message
+          end
         end
 
-        it 'should start' do
-          expect(pidfile_path).not_to exist
-
-          server_manager.start
-
-          expect(pidfile_path).to exist
-
-          pid = pidfile_path.read.to_i
-          expect(Process.kill(0, pid)).to be 1
-
-          server_manager.stop
-        end
-      end
-
-      describe '#stop' do
-        before(:each) do
-          install(server_manager)
-
-          server_manager.start
+        after(:each) do
+          pid_path = path.join('data', 'neo4j-service.pid')
+          if pid_path.exist?
+            pid = pid_path.read.to_i
+            Process.kill('TERM', pid)
+            begin
+              sleep(1) while Process.kill(0, pid)
+            rescue Errno::ESRCH
+              nil
+            end
+          end
+          path.rmtree
         end
 
-        it 'should stop a started instance' do
-          expect(pidfile_path).to exist
-          pid = pidfile_path.read.to_i
-          expect(Process.kill(0, pid)).to be 1
+        let(:neo4j_port) { 7474 }
 
-          server_manager.stop
-
-          expect(pidfile_path).not_to exist
-          expect { Process.kill(0, pid) }.to raise_error Errno::ESRCH
-        end
-      end
-
-      describe '#reset' do
-        before(:each) do
-          install(server_manager)
-          server_manager.config_auth_enabeled!(false)
-
-          server_manager.start
+        def open_session(port)
+          Neo4j::Session.open(:server_db, "http://localhost:#{port}")
         end
 
-        it 'should wipe out the data' do
-          open_session(neo4j_port).query("CREATE (:User {name: 'Bob'})")
+        let(:neo4j_session) { open_session(neo4j_port) }
 
-          expect do
-            server_manager.reset
-          end.to change { open_session(neo4j_port).query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
+        def install(server_manager, edition = 'community-latest')
+          tempfile = Tempfile.new("neo4j-#{edition}")
 
-          server_manager.stop
-        end
-      end
+          neo4j_archive = 'spec/files/neo4j-community-2.2.3-unix.tar.gz'
+          FileUtils.cp(neo4j_archive, tempfile.path)
 
-      describe '#config' do
-        before(:each) do
-          install(server_manager)
+          expect(server_manager)
+            .to receive(:download_neo4j).and_return(tempfile.path)
+          expect(server_manager)
+            .to receive(:version_from_edition).and_return('community-2.2.3')
 
-          server_manager.config_auth_enabeled!(false)
-          server_manager.config_port!(neo4j_port)
-
-          server_manager.start
+          # VCR.use_cassette('neo4j-install') do
+          server_manager.install(edition)
+          # end
         end
 
-        context 'port 7470' do
-          let(:neo4j_port) { 7470 }
+        describe '#install' do
+          it 'should install' do
+            install(server_manager)
+          end
+        end
 
-          it 'should configure the port' do
-            expect { open_session(7474) }
-              .to raise_error Faraday::ConnectionFailed
+        describe '#start' do
+          before(:each) do
+            install(server_manager)
+          end
 
-            expect { open_session(neo4j_port) }.not_to raise_error
+          it 'should start' do
+            expect(pidfile_path).not_to exist
+
+            server_manager.start
+
+            expect(pidfile_path).to exist
+
+            pid = pidfile_path.read.to_i
+            expect(Process.kill(0, pid)).to be 1
 
             server_manager.stop
+          end
+        end
+
+        describe '#stop' do
+          before(:each) do
+            install(server_manager)
+
+            server_manager.start
+          end
+
+          it 'should stop a started instance' do
+            expect(pidfile_path).to exist
+            pid = pidfile_path.read.to_i
+            expect(Process.kill(0, pid)).to be 1
+
+            server_manager.stop
+
+            expect(pidfile_path).not_to exist
+            expect { Process.kill(0, pid) }.to raise_error Errno::ESRCH
+          end
+        end
+
+        describe '#reset' do
+          before(:each) do
+            install(server_manager)
+            server_manager.config_auth_enabeled!(false)
+
+            server_manager.start
+          end
+
+          it 'should wipe out the data' do
+            open_session(neo4j_port).query("CREATE (:User {name: 'Bob'})")
+
+            expect do
+              server_manager.reset
+            end.to change { open_session(neo4j_port).query('MATCH (u:User) RETURN count(u) AS count').first.count }.from(1).to(0)
+
+            server_manager.stop
+          end
+        end
+
+        describe '#config' do
+          before(:each) do
+            install(server_manager)
+
+            server_manager.config_auth_enabeled!(false)
+            server_manager.config_port!(neo4j_port)
+
+            server_manager.start
+          end
+
+          context 'port 7470' do
+            let(:neo4j_port) { 7470 }
+
+            it 'should configure the port' do
+              expect { open_session(7474) }
+                .to raise_error Faraday::ConnectionFailed
+
+              expect { open_session(neo4j_port) }.not_to raise_error
+
+              server_manager.stop
+            end
           end
         end
       end

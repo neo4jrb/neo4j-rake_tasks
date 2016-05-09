@@ -110,9 +110,17 @@ module Neo4j
       def config_port!(port)
         puts "Config ports #{port} / #{port - 1}"
 
-        modify_config_file('org.neo4j.server.webserver.https.enabled' => false,
-                           'org.neo4j.server.webserver.port' => port,
-                           'org.neo4j.server.webserver.https.port' => port - 1)
+        if server_version >= '3.0.0'
+          # These are not ideal, perhaps...
+          modify_config_file('dbms.connector.https.enabled' => false,
+                             'dbms.connector.http.enabled' => true,
+                             'dbms.connector.http.address' => "0.0.0.0:#{port}",
+                             'dbms.connector.https.address' => "localhost:#{port - 1}")
+        else
+          modify_config_file('org.neo4j.server.webserver.https.enabled' => false,
+                             'org.neo4j.server.webserver.port' => port,
+                             'org.neo4j.server.webserver.https.port' => port - 1)
+        end
       end
 
       # END MAIN COMMANDS
@@ -120,11 +128,12 @@ module Neo4j
       def modify_config_file(properties)
         contents = File.read(property_configuration_path)
 
-        File.open(property_configuration_path, 'w') do |file|
-          result = properties.inject(contents) do |r, (property, value)|
-            r.gsub(/#{property}\s*=\s*(.+)/, "#{property}=#{value}")
-          end
-          file << result
+        File.open(property_configuration_path, 'w') { |file| file << modify_config_contents(contents, properties) }
+      end
+
+      def modify_config_contents(contents, properties)
+        properties.inject(contents) do |r, (property, value)|
+          r.gsub(/^\s*(#\s*)?#{property}\s*=\s*(.+)/, "#{property}=#{value}")
         end
       end
 
@@ -159,7 +168,11 @@ module Neo4j
       end
 
       def property_configuration_path
-        @path.join('conf', 'neo4j-server.properties')
+        if server_version >= '3.0.0'
+          @path.join('conf', 'neo4j.conf')
+        else
+          @path.join('conf', 'neo4j-server.properties')
+        end
       end
 
       def validate_is_system_admin!
@@ -193,6 +206,11 @@ module Neo4j
       private
 
       NEO4J_VERSIONS_URL = 'https://raw.githubusercontent.com/neo4jrb/neo4j-rake_tasks/master/neo4j_versions.yml'
+
+      def server_version
+        kernel_jar_path = Dir.glob(@path.join('lib/neo4j-kernel-*.jar'))[0]
+        kernel_jar_path.match(/neo4j-kernel-([\d\.]+)\.jar$/)[1]
+      end
 
       def neo4j_versions
         require 'open-uri'
