@@ -200,7 +200,11 @@ module Neo4j
       end
 
       def pid_path
-        @path.join('data/neo4j-service.pid')
+        if server_version >= '3.0.0'
+          @path.join('run/neo4j.pid')
+        else
+          @path.join('data/neo4j-service.pid')
+        end
       end
 
       private
