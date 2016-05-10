@@ -16,12 +16,14 @@ module Neo4j
         version = version_from_edition(edition_string)
         puts "Installing neo4j-#{version}"
 
-        return false if neo4j_binary_path.exist?
+        if !neo4j_binary_path.exist?
+          archive_path = download_neo4j(version)
+          extract!(archive_path)
 
-        archive_path = download_neo4j(version)
-        extract!(archive_path)
+          FileUtils.rm archive_path
+        end
 
-        FileUtils.rm archive_path
+        config_port!(7474) if server_version >= '3.0.0'
 
         puts "Neo4j installed to: #{@path}"
       end
