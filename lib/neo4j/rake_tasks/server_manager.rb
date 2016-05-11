@@ -116,8 +116,8 @@ module Neo4j
           # These are not ideal, perhaps...
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
-                             'dbms.connector.http.address' => "localhost:#{port}",
-                             'dbms.connector.https.address' => "localhost:#{port - 1}")
+                             'dbms.connector.http.address' => "0.0.0.0:#{port}",
+                             'dbms.connector.https.address' => "0.0.0.0:#{port - 1}")
         else
           modify_config_file('org.neo4j.server.webserver.https.enabled' => false,
                              'org.neo4j.server.webserver.port' => port,
