@@ -76,13 +76,17 @@ module Neo4j
 
         stop
 
-        delete_path = @path.join('data/graph.db/*')
-        puts "Deleting all files matching #{delete_path}"
-        FileUtils.rm_rf(Dir.glob(delete_path))
+        paths = if server_version >= '3.0.0'
+                  ['data/graph.db/*', 'data/log/*']
+                else
+                  ['data/databases/graph.db/*', 'logs/*']
+                end
 
-        delete_path = @path.join('data/log/*')
-        puts "Deleting all files matching #{delete_path}"
-        FileUtils.rm_rf(Dir.glob(delete_path))
+        paths.each do |path|
+          delete_path = @path.join(path)
+          puts "Deleting all files matching #{delete_path}"
+          FileUtils.rm_rf(Dir.glob(delete_path))
+        end
 
         start
       end
@@ -110,14 +114,15 @@ module Neo4j
       end
 
       def config_port!(port)
-        puts "Config ports #{port} / #{port - 1}"
+        puts "Config ports #{port} (HTTP) / #{port - 1} (HTTPS) / #{port - 2} (Bolt)"
 
         if server_version >= '3.0.0'
           # These are not ideal, perhaps...
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
                              'dbms.connector.http.address' => "localhost:#{port}",
-                             'dbms.connector.https.address' => "localhost:#{port - 1}")
+                             'dbms.connector.https.address' => "localhost:#{port - 1}",
+                             'dbms.connector.bolt.address' => "localhost:#{port - 2}")
         else
           modify_config_file('org.neo4j.server.webserver.https.enabled' => false,
                              'org.neo4j.server.webserver.port' => port,

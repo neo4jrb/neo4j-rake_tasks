@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.5.5] - 05-29-2016
+
+### Fixed
+
+- Fixed reset task for Neo4j 3.0 (see #27)
+- Make `config` task reset Bolt port as well as HTTP / HTTPS (see #27)
+
 ## [0.4.2] - 02-17-2016
 
 ### Fixed
