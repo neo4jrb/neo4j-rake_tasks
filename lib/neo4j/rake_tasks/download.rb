@@ -19,9 +19,7 @@ module Neo4j
              content_length_proc: lambda do |total|
                create_progress_bar(message, total) if total && total > 0
              end,
-             progress_proc: lambda do |s|
-               @progress_bar.progress = s if @progress_bar
-             end).read
+             progress_proc: method(:update_progress_bar)).read
       end
 
       private
@@ -29,6 +27,12 @@ module Neo4j
       def create_progress_bar(message, total)
         @progress_bar ||= ProgressBar.create title: message,
                                              total: total
+      end
+
+      def update_progress_bar(value)
+        return unless @progress_bar
+        value = @progress_bar.total >= value ? value : @progress_bar.total
+        @progress_bar.progress = value
       end
 
       def head(url)
