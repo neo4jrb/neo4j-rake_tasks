@@ -77,9 +77,9 @@ module Neo4j
         stop
 
         paths = if server_version >= '3.0.0'
-                  ['data/graph.db/*', 'data/log/*']
-                else
                   ['data/databases/graph.db/*', 'logs/*']
+                else
+                  ['data/graph.db/*', 'data/log/*']
                 end
 
         paths.each do |path|
