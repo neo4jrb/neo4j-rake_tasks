@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.6.1] - 06-03-2016
+
+### Removed `require` statements for `httparty` (thanks again ProGM!)
+
 ## [0.6.0] - 06-03-2016
 
 ### Changed
