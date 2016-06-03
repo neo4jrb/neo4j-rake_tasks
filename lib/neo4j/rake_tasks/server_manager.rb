@@ -1,5 +1,4 @@
 require 'pathname'
-require 'httparty'
 
 module Neo4j
   module RakeTasks
