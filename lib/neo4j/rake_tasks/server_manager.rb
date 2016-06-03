@@ -14,10 +14,10 @@ module Neo4j
 
       def install(edition_string)
         version = version_from_edition(edition_string)
-        puts "Installing neo4j-#{version}"
 
         if !neo4j_binary_path.exist?
           archive_path = download_neo4j(version)
+          puts "Installing neo4j-#{version}"
           extract!(archive_path)
 
           FileUtils.rm archive_path
@@ -232,18 +232,16 @@ module Neo4j
 
       def download_neo4j(version)
         tempfile = Tempfile.open('neo4j-download', encoding: 'ASCII-8BIT')
-
         url = download_url(version)
 
-        status = HTTParty.head(url).code
-        unless (200...300).include?(status)
-          fail "#{version} is not available to download"
-        end
+        download = Download.new(url)
+        raise "#{version} is not available to download" unless download.exists?
 
-        tempfile << HTTParty.get(url)
+        tempfile << download.fetch("Fetching neo4j-#{version}")
         tempfile.flush
-
         tempfile.path
+      ensure
+        puts
       end
 
       # POSTs to an endpoint with the form required to change a Neo4j password
