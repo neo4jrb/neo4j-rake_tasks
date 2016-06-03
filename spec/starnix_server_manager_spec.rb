@@ -17,6 +17,7 @@ module Neo4j
 
       describe '#modify_config_contents' do
         subject { server_manager.modify_config_contents(contents, properties) }
+        after(:each) { path.rmtree }
 
         let_context properties: {prop: 2} do
           let_context(contents: 'prop=1') { it { should eq('prop=2') } }
