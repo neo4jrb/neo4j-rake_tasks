@@ -1,9 +1,7 @@
 # :nocov:
 # borrowed from architect4r
 require 'os'
-require 'httparty'
 require 'zip'
-require 'httparty'
 require 'pathname'
 require 'colored'
 require File.expand_path('../windows_server_manager', __FILE__)
