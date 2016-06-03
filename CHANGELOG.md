@@ -5,6 +5,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.6.0] - 06-03-2016
+
+### Changed
+
+- Removed dependency on HTTParty (thanks ProGM / see #28)
+
+### Added
+
+- Progress bar for Neo4j install (thanks ProGM / see #28)
+
 ## [0.5.6] - 05-30-2016
 
 ### Fixed
