@@ -84,6 +84,38 @@ The ``neo4j-rake_tasks`` gem (automatically included with the ``neo4j`` gem) inc
   Stop the Neo4j server
 
 
+## neo4j:indexes
+
+### Arguments
+
+``environment``
+
+### Example
+
+``rake neo4j:indexes[development]``
+
+### Description
+
+  Print out the indexes in the database
+
+
+
+## neo4j:constraints
+
+### Arguments
+
+``environment``
+
+### Example
+
+``rake neo4j:constraints[development]``
+
+### Description
+
+  Print out the constraints in the database
+
+
+
 ## neo4j:reset_yes_i_am_sure
 
 ### Arguments
