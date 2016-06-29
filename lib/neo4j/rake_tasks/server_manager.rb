@@ -22,7 +22,7 @@ module Neo4j
           FileUtils.rm archive_path
         end
 
-        config_port!(7474) if server_version >= '3.0.0'
+        config_port!(7474) if server_version_greater_than?('3.0.0')
 
         puts "Neo4j installed to: #{@path}"
       end
@@ -75,7 +75,7 @@ module Neo4j
 
         stop
 
-        paths = if server_version >= '3.0.0'
+        paths = if server_version_greater_than?('3.0.0')
                   ['data/databases/graph.db/*', 'logs/*']
                 else
                   ['data/graph.db/*', 'data/log/*']
@@ -115,7 +115,7 @@ module Neo4j
       def config_port!(port)
         puts "Config ports #{port} (HTTP) / #{port - 1} (HTTPS) / #{port - 2} (Bolt)"
 
-        if server_version >= '3.0.0'
+        if server_version_greater_than?('3.0.0')
           # These are not ideal, perhaps...
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
@@ -137,6 +137,15 @@ module Neo4j
         File.open(property_configuration_path, 'w') { |file| file << modify_config_contents(contents, properties) }
       end
 
+      def get_config_property(property)
+        lines = File.read(property_configuration_path).lines
+        config_lines = lines.grep(/^\s*[^#]/).map(&:strip).reject(&:empty?)
+
+        lines.find do |line|
+          line.match(/\s*#{property}=/)
+        end.split('=')[1]
+      end
+
       def modify_config_contents(contents, properties)
         properties.inject(contents) do |r, (property, value)|
           r.gsub(/^\s*(#\s*)?#{property}\s*=\s*(.+)/, "#{property}=#{value}")
@@ -151,7 +160,28 @@ module Neo4j
         class_for_os.new(path)
       end
 
+      def print_indexes
+        print_indexes_or_constraints(:index)
+      end
+
+      def print_constraints
+        print_indexes_or_constraints(:constraint)
+      end
+
       protected
+
+      def print_indexes_or_constraints(type)
+        url = File.join(server_url, "db/data/schema/#{type}")
+        data = JSON.load(open(url).read)
+        data.sort_by {|i| i['label'] }.chunk do |index|
+          index['label']
+        end.each do |label, indexes|
+          puts "\e[36m#{label}\e[0m"
+          indexes.each do |index|
+            puts '  ' + index['property_keys'].join(', ')
+          end
+        end
+      end
 
       def start_argument(wait)
         wait ? 'start' : 'start-no-wait'
@@ -173,8 +203,19 @@ module Neo4j
         binary_command_path(neo4j_shell_binary_filename)
       end
 
+      def server_url
+        if server_version_greater_than?('3.0.0')
+          get_config_property('dbms.connector.http.address').strip.tap do |address|
+            address.prepend('http://') unless address.match(/^http:\/\//)
+          end
+        else
+          port = get_config_property('org.neo4j.server.webserver.https.port')
+          "http://localhost:#{port}"
+        end.strip
+      end
+
       def property_configuration_path
-        if server_version >= '3.0.0'
+        if server_version_greater_than?('3.0.0')
           @path.join('conf', 'neo4j.conf')
         else
           @path.join('conf', 'neo4j-server.properties')
@@ -206,7 +247,7 @@ module Neo4j
       end
 
       def pid_path
-        if server_version >= '3.0.0'
+        if server_version_greater_than?('3.0.0')
           @path.join('run/neo4j.pid')
         else
           @path.join('data/neo4j-service.pid')
@@ -216,6 +257,10 @@ module Neo4j
       private
 
       NEO4J_VERSIONS_URL = 'https://raw.githubusercontent.com/neo4jrb/neo4j-rake_tasks/master/neo4j_versions.yml'
+
+      def server_version_greater_than?(version)
+        Gem::Version.new(server_version) > Gem::Version.new(version)
+      end
 
       def server_version
         kernel_jar_path = Dir.glob(@path.join('lib/neo4j-kernel-*.jar'))[0]

@@ -1,5 +1,5 @@
 module Neo4j
   module RakeTasks
-    VERSION = '0.6.1'
+    VERSION = '0.7.0'
   end
 end

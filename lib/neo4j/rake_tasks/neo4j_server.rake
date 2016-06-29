@@ -110,6 +110,26 @@ namespace :neo4j do
     server_manager.info
   end
 
+  desc 'List indexes for the Neo4j server'
+  task :indexes, :environment do |_, args|
+    args.with_defaults(environment: :development)
+
+    puts "Getting Neo4j indexes for #{args[:environment]}..."
+
+    server_manager = server_manager(args[:environment])
+    server_manager.print_indexes
+  end
+
+  desc 'List constraints for the Neo4j server'
+  task :constraints, :environment do |_, args|
+    args.with_defaults(environment: :development)
+
+    puts "Getting Neo4j constraints for #{args[:environment]}..."
+
+    server_manager = server_manager(args[:environment])
+    server_manager.print_constraints
+  end
+
   desc 'Restart the Neo4j Server'
   task :restart, :environment do |_, args|
     args.with_defaults(environment: :development)
