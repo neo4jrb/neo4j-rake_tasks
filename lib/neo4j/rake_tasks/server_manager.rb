@@ -173,12 +173,16 @@ module Neo4j
       def print_indexes_or_constraints(type)
         url = File.join(server_url, "db/data/schema/#{type}")
         data = JSON.load(open(url).read)
-        data.sort_by {|i| i['label'] }.chunk do |index|
-          index['label']
+        if data.empty?
+          puts "No #{type.to_s.pluralize} found"
+          return
+        end
+        data.sort_by {|i| i['label'] }.chunk do |value|
+          value['label']
         end.each do |label, indexes|
           puts "\e[36m#{label}\e[0m"
-          indexes.each do |index|
-            puts '  ' + index['property_keys'].join(', ')
+          indexes.each do |value|
+            puts '  ' + value['property_keys'].join(', ')
           end
         end
       end
@@ -209,7 +213,7 @@ module Neo4j
             address.prepend('http://') unless address.match(/^http:\/\//)
           end
         else
-          port = get_config_property('org.neo4j.server.webserver.https.port')
+          port = get_config_property('org.neo4j.server.webserver.port')
           "http://localhost:#{port}"
         end.strip
       end
