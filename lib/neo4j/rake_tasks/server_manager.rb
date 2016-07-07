@@ -1,4 +1,5 @@
 require 'pathname'
+require 'ostruct'
 
 module Neo4j
   module RakeTasks
@@ -172,17 +173,16 @@ module Neo4j
 
       def print_indexes_or_constraints(type)
         url = File.join(server_url, "db/data/schema/#{type}")
-        data = JSON.load(open(url).read)
+        data = JSON.load(open(url).read).map(&OpenStruct.method(:new))
         if data.empty?
           puts "No #{type.to_s.pluralize} found"
           return
         end
-        data.sort_by {|i| i['label'] }.chunk do |value|
-          value['label']
-        end.each do |label, indexes|
-          puts "\e[36m#{label}\e[0m"
-          indexes.each do |value|
-            puts '  ' + value['property_keys'].join(', ')
+        criteria = -> (i) { i.label || i.relationshipType }
+        data.sort_by(&criteria).chunk(&criteria).each do |label_or_type, rows|
+          puts "\e[36m#{label_or_type}\e[0m"
+          rows.each do |row|
+            puts "  #{row.type + ': ' if row.type}#{row.property_keys.join(', ')}"
           end
         end
       end
