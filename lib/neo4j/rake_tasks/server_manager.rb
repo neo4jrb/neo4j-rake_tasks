@@ -178,7 +178,7 @@ module Neo4j
           puts "No #{type.to_s.pluralize} found"
           return
         end
-        criteria = -> (i) { i.label || i.relationshipType }
+        criteria = lambda { |i| i.label || i.relationshipType }
         data.sort_by(&criteria).chunk(&criteria).each do |label_or_type, rows|
           puts "\e[36m#{label_or_type}\e[0m"
           rows.each do |row|
