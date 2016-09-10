@@ -1,5 +1,5 @@
 ---
-  stable: &stable '3.0.4'
+  stable: &stable '3.0.5'
   milestone: 3.1.0-M08
   rc: &rc null
 
