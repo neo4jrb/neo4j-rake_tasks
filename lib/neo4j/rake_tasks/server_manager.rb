@@ -237,7 +237,7 @@ module Neo4j
 
       def version_from_edition(edition_string)
         edition_string.downcase.gsub(/-([a-z\-]+)$/) do
-          v = $1.upcase
+          v = $1
           puts "Retrieving #{v} version..."
 
           version = neo4j_versions[v]
@@ -248,6 +248,8 @@ module Neo4j
           puts "#{v.capitalize} version is: #{version}"
 
           "-#{version}"
+        end.gsub(/-([a-z\-\.0-9])$/i) do
+          $1.upcase
         end
       end
 
