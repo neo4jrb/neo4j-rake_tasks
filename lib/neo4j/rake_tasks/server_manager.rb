@@ -248,9 +248,7 @@ module Neo4j
           puts "#{v.capitalize} version is: #{version}"
 
           "-#{version}"
-        end.gsub(/-[a-z\-\.0-9]+$/i) do
-          $1.upcase
-        end
+        end.gsub(/-[a-z\-\.0-9]+$/i, &:upcase)
       end
 
       def pid_path
