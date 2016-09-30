@@ -237,14 +237,15 @@ module Neo4j
 
       def version_from_edition(edition_string)
         edition_string.downcase.gsub(/-([a-z\-]+)$/) do
-          puts "Retrieving #{$1} version..."
+          v = $1.upcase
+          puts "Retrieving #{v} version..."
 
-          version = neo4j_versions[$1]
+          version = neo4j_versions[v]
 
-          fail "Invalid version identifier: #{$1}" if !neo4j_versions.key?($1)
-          fail "There is not currently a version for #{$1}" if version.nil?
+          fail "Invalid version identifier: #{v}" if !neo4j_versions.key?(v)
+          fail "There is not currently a version for #{v}" if version.nil?
 
-          puts "#{$1.capitalize} version is: #{version}"
+          puts "#{v.capitalize} version is: #{version}"
 
           "-#{version}"
         end
