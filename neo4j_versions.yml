@@ -1,6 +1,6 @@
 ---
   stable: &stable '3.0.7'
-  milestone: 3.1.0-BETA2
+  milestone: 3.1.0-BETA3
   rc: &rc null
 
   # aliases
