@@ -116,8 +116,14 @@ module Neo4j
       def config_port!(port)
         puts "Config ports #{port} (HTTP) / #{port - 1} (HTTPS) / #{port - 2} (Bolt)"
 
-        if server_version_greater_than?('3.0.0')
+        if server_version_greater_than?('3.0.9')
           # These are not ideal, perhaps...
+          modify_config_file('dbms.connector.https.enabled' => false,
+                             'dbms.connector.http.enabled' => true,
+                             'dbms.connector.http.listen_address' => "localhost:#{port}",
+                             'dbms.connector.https.listen_address' => "localhost:#{port - 1}",
+                             'dbms.connector.bolt.listen_address' => "localhost:#{port - 2}")
+        elsif server_version_greater_than?('3.0.0')
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
                              'dbms.connector.http.address' => "localhost:#{port}",
@@ -208,7 +214,11 @@ module Neo4j
       end
 
       def server_url
-        if server_version_greater_than?('3.0.0')
+        if server_version_greater_than?('3.0.9')
+          get_config_property('dbms.connector.http.listen_address').strip.tap do |address|
+            address.prepend('http://') unless address.match(/^http:\/\//)
+          end
+        elsif server_version_greater_than?('3.0.0')
           get_config_property('dbms.connector.http.address').strip.tap do |address|
             address.prepend('http://') unless address.match(/^http:\/\//)
           end
