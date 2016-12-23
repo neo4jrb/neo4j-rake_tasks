@@ -23,7 +23,7 @@ module Neo4j
           FileUtils.rm archive_path
         end
 
-        config_port!(7474) if server_version_greater_than?('3.0.0')
+        config_port!(7474) if server_version_greater_than_or_equal_to?('3.0.0')
 
         puts "Neo4j installed to: #{@path}"
       end
@@ -76,7 +76,7 @@ module Neo4j
 
         stop
 
-        paths = if server_version_greater_than?('3.0.0')
+        paths = if server_version_greater_than_or_equal_to?('3.0.0')
                   ['data/databases/graph.db/*', 'logs/*']
                 else
                   ['data/graph.db/*', 'data/log/*']
@@ -116,14 +116,14 @@ module Neo4j
       def config_port!(port)
         puts "Config ports #{port} (HTTP) / #{port - 1} (HTTPS) / #{port - 2} (Bolt)"
 
-        if server_version_greater_than?('3.0.9')
+        if server_version_greater_than_or_equal_to?('3.1.0')
           # These are not ideal, perhaps...
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
                              'dbms.connector.http.listen_address' => "localhost:#{port}",
                              'dbms.connector.https.listen_address' => "localhost:#{port - 1}",
                              'dbms.connector.bolt.listen_address' => "localhost:#{port - 2}")
-        elsif server_version_greater_than?('3.0.0')
+        elsif server_version_greater_than_or_equal_to?('3.0.0')
           modify_config_file('dbms.connector.https.enabled' => false,
                              'dbms.connector.http.enabled' => true,
                              'dbms.connector.http.address' => "localhost:#{port}",
@@ -214,11 +214,11 @@ module Neo4j
       end
 
       def server_url
-        if server_version_greater_than?('3.0.9')
+        if server_version_greater_than_or_equal_to?('3.1.0')
           get_config_property('dbms.connector.http.listen_address').strip.tap do |address|
             address.prepend('http://') unless address.match(/^http:\/\//)
           end
-        elsif server_version_greater_than?('3.0.0')
+        elsif server_version_greater_than_or_equal_to?('3.0.0')
           get_config_property('dbms.connector.http.address').strip.tap do |address|
             address.prepend('http://') unless address.match(/^http:\/\//)
           end
@@ -229,7 +229,7 @@ module Neo4j
       end
 
       def property_configuration_path
-        if server_version_greater_than?('3.0.0')
+        if server_version_greater_than_or_equal_to?('3.0.0')
           @path.join('conf', 'neo4j.conf')
         else
           @path.join('conf', 'neo4j-server.properties')
@@ -262,7 +262,7 @@ module Neo4j
       end
 
       def pid_path
-        if server_version_greater_than?('3.0.0')
+        if server_version_greater_than_or_equal_to?('3.0.0')
           @path.join('run/neo4j.pid')
         else
           @path.join('data/neo4j-service.pid')
@@ -273,8 +273,8 @@ module Neo4j
 
       NEO4J_VERSIONS_URL = 'https://raw.githubusercontent.com/neo4jrb/neo4j-rake_tasks/master/neo4j_versions.yml'
 
-      def server_version_greater_than?(version)
-        Gem::Version.new(server_version) > Gem::Version.new(version)
+      def server_version_greater_than_or_equal_to?(version)
+        Gem::Version.new(server_version) >= Gem::Version.new(version)
       end
 
       def server_version
