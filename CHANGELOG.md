@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.10] - 12-23-2016
+
+### Fixed
+
+- Support for `neo4j:config` in Neo4j >= 3.1.0 (see #37, thanks to @ernestoe)
+
+### Skip a few...
+
 ## [0.6.1] - 06-03-2016
 
 ### Removed `require` statements for `httparty` (thanks again ProGM!)
