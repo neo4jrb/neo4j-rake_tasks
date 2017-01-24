@@ -1,5 +1,5 @@
 ---
-  stable: &stable '3.1.0'
+  stable: &stable '3.1.1'
   alpha: 3.2.0-alpha02
   milestone: 3.2.0-alpha02
   rc: &rc 3.2.0-alpha02
