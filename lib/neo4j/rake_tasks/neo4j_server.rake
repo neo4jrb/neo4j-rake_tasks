@@ -20,10 +20,6 @@ namespace :neo4j do
     ::Neo4j::RakeTasks::ServerManager.new_for_os(server_path(environment))
   end
 
-  def edition_supports_auth?(edition_string)
-    !/-2\.0|1\.[0-9]/.match(edition_string)
-  end
-
   desc 'Install Neo4j with auth disabled in v2.2+'
   task :install, :edition, :environment do |_, args|
     args.with_defaults(edition: 'community-latest', environment: 'development')
@@ -32,7 +28,8 @@ namespace :neo4j do
 
     server_manager = server_manager(args[:environment])
     server_manager.install(args[:edition])
-    if edition_supports_auth?(args[:edition])
+
+    if server_manager.supports_auth?
       server_manager.config_auth_enabeled!(false)
     end
 

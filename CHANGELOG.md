@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.11] - 03-18-2017
+
+### Fixed
+
+- Bug which caused auth to not be disabled in Neo4j 3.1.2
+
 ## [0.7.10] - 12-23-2016
 
 ### Fixed

@@ -106,6 +106,10 @@ module Neo4j
         end
       end
 
+      def supports_auth?
+        Gem::Version.new(server_version) >= Gem::Version.new('2.2.0')
+      end
+
       def config_auth_enabeled!(enabled)
         value = enabled ? 'true' : 'false'
         modify_config_file(
