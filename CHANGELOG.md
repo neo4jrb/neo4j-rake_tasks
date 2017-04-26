@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.11] - 04-25-2017
+
+### Fixed
+
+- Removed `colored` gem as dependency (fewer dependencies and less monkey patching are both good.  Thanks @dominicsayers / see #38)
+
 ## [0.7.11] - 03-18-2017
 
 ### Fixed

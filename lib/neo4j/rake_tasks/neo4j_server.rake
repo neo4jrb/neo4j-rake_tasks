@@ -3,7 +3,6 @@
 require 'os'
 require 'zip'
 require 'pathname'
-require 'colored'
 require File.expand_path('../windows_server_manager', __FILE__)
 require File.expand_path('../starnix_server_manager', __FILE__)
 
@@ -20,6 +19,10 @@ namespace :neo4j do
     ::Neo4j::RakeTasks::ServerManager.new_for_os(server_path(environment))
   end
 
+  def cyanize(string)
+    "\e[36m#{string}\e[0m"
+  end
+
   desc 'Install Neo4j with auth disabled in v2.2+'
   task :install, :edition, :environment do |_, args|
     args.with_defaults(edition: 'community-latest', environment: 'development')
@@ -34,10 +37,10 @@ namespace :neo4j do
     end
 
     puts 'To start it type one of the following:'
-    puts '  rake neo4j:start'.cyan
-    puts '  rake neo4j:start[ENVIRONMENT]'.cyan
+    puts cyanize('  rake neo4j:start')
+    puts cyanize('  rake neo4j:start[ENVIRONMENT]')
     puts 'To change the server port (default is 7474) type:'
-    puts '  neo4j:config[ENVIRONMENT,PORT]'.cyan
+    puts cyanize('  neo4j:config[ENVIRONMENT,PORT]')
   end
 
   desc 'Start the Neo4j Server'
