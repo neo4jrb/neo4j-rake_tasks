@@ -23,7 +23,8 @@ module Neo4j
       end
 
       def download_url(version)
-        "http://dist.neo4j.org/neo4j-#{version}-unix.tar.gz"
+        ENV['NEO4J_DIST'] && ENV['NEO4J_DIST'].gsub('version', version) ||
+          "http://dist.neo4j.org/neo4j-#{version}-unix.tar.gz"
       end
     end
   end

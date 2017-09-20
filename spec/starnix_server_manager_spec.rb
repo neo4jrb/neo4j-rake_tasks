@@ -192,6 +192,21 @@ module Neo4j
             end
           end
         end
+
+        describe '#download_url' do
+          it 'should return default neo4j download url' do
+            ENV['NEO4J_DIST'] = nil
+            expect(server_manager.send(:download_url, 'community-9.9.9'))
+              .to eq('http://dist.neo4j.org/neo4j-community-9.9.9-unix.tar.gz')
+          end
+
+          it 'should return custom neo4j download url' do
+            ENV['NEO4J_DIST'] = 'file://custom-location/neo4j-version-unix.tar.gz'
+            expect(server_manager.send(:download_url, 'community-9.9.9'))
+              .to eq('file://custom-location/neo4j-community-9.9.9-unix.tar.gz')
+            ENV['NEO4J_DIST'] = nil
+          end
+        end
       end
     end
   end
