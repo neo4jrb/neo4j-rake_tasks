@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.13] - 04-25-2017
+
+### Fixed
+
+- Added `NEO4J_DIST` environment variable to allow for downloading from custom URL (neccessitated by Neo4j, Inc. removing public link).  (thanks @klobuczek / see #39)
+
 ## [0.7.11] - 04-25-2017
 
 ### Fixed
