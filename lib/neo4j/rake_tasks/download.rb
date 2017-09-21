@@ -38,7 +38,7 @@ module Neo4j
       def head(url)
         parsed_url = URI(url)
         Net::HTTP.start(parsed_url.host, parsed_url.port) do |http|
-          return http.head(parsed_url.path)
+          return http.head("#{parsed_url.path}?#{parsed_url.query}")
         end
       end
     end

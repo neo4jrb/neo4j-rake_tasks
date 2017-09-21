@@ -5,7 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
-## [0.7.13] - 04-25-2017
+## [0.7.14] - 09-21-2017
+
+### Fixed
+
+- Fixed issue with query string in NEO4J_DIST
+
+## [0.7.13] - 09-20-2017
 
 ### Fixed
 
