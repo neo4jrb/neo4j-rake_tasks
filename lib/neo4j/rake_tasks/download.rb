@@ -37,7 +37,7 @@ module Neo4j
 
       def head(url)
         parsed_url = URI(url)
-        Net::HTTP.start(parsed_url.host, parsed_url.port) do |http|
+        Net::HTTP.start(parsed_url.host, parsed_url.port, use_ssl: uri.scheme == 'https') do |http|
           return http.head("#{parsed_url.path}?#{parsed_url.query}")
         end
       end
