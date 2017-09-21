@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.16] - 09-21-2017
+
+### Fixed
+
+- Fixed issue where I was in a rush
+
 ## [0.7.15] - 09-21-2017
 
 ### Fixed
