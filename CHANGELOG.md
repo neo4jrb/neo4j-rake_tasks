@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.17] - 10-15-2017
+
+### Fixed
+
+- Previously defined `neo4j:*` tasks are cleared before defined in this gem (this is primarily to support the removal of `neo4j-rake_tasks` as a dependency of the `neo4j-core` gem)
+
 ## [0.7.16] - 09-21-2017
 
 ### Fixed

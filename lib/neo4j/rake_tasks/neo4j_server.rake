@@ -23,6 +23,7 @@ namespace :neo4j do
     "\e[36m#{string}\e[0m"
   end
 
+  Rake::Task['neo4j:install'].clear
   desc 'Install Neo4j with auth disabled in v2.2+'
   task :install, :edition, :environment do |_, args|
     args.with_defaults(edition: 'community-latest', environment: 'development')
@@ -43,6 +44,7 @@ namespace :neo4j do
     puts cyanize('  neo4j:config[ENVIRONMENT,PORT]')
   end
 
+  Rake::Task['neo4j:start'].clear
   desc 'Start the Neo4j Server'
   task :start, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -52,6 +54,7 @@ namespace :neo4j do
     server_manager.start
   end
 
+  Rake::Task["neo4j:start_no_wait"].clear
   desc 'Start the Neo4j Server asynchronously'
   task :start_no_wait, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -61,6 +64,7 @@ namespace :neo4j do
     server_manager.start(false)
   end
 
+  Rake::Task['neo4j:console'].clear
   desc 'Start the Neo4j Server in the foreground'
   task :console, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -70,6 +74,7 @@ namespace :neo4j do
     server_manager.console
   end
 
+  Rake::Task['neo4j:shell'].clear
   desc 'Open Neo4j REPL Shell'
   task :shell, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -79,6 +84,7 @@ namespace :neo4j do
     server_manager.shell
   end
 
+  Rake::Task['neo4j:config'].clear
   desc 'Configure Server, e.g. rake neo4j:config[development,8888]'
   task :config, :environment, :port do |_, args|
     args.with_defaults(environment: :development, port: 7474)
@@ -90,6 +96,7 @@ namespace :neo4j do
     server_manager.config_port!(args[:port].to_i)
   end
 
+  Rake::Task['neo4j:stop'].clear
   desc 'Stop the Neo4j Server'
   task :stop, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -100,6 +107,7 @@ namespace :neo4j do
     server_manager.stop
   end
 
+  Rake::Task['neo4j:info'].clear
   desc 'Get info for the Neo4j Server'
   task :info, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -110,6 +118,7 @@ namespace :neo4j do
     server_manager.info
   end
 
+  Rake::Task['neo4j:indexes'].clear
   desc 'List indexes for the Neo4j server'
   task :indexes, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -120,6 +129,7 @@ namespace :neo4j do
     server_manager.print_indexes
   end
 
+  Rake::Task['neo4j:constraints'].clear
   desc 'List constraints for the Neo4j server'
   task :constraints, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -130,6 +140,7 @@ namespace :neo4j do
     server_manager.print_constraints
   end
 
+  Rake::Task['neo4j:restart'].clear
   desc 'Restart the Neo4j Server'
   task :restart, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -140,6 +151,7 @@ namespace :neo4j do
     server_manager.restart
   end
 
+  Rake::Task['neo4j:reset_yes_i_am_sure'].clear
   desc 'Reset the Neo4j Server'
   task :reset_yes_i_am_sure, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -150,6 +162,7 @@ namespace :neo4j do
     server_manager.reset
   end
 
+  Rake::Task['neo4j:change_password'].clear
   desc 'Neo4j 2.2+: Change connection password'
   task :change_password do |_, _args|
     # Maybe we should take the environment as an arg and
@@ -157,6 +170,7 @@ namespace :neo4j do
     server_manager_class.change_password!
   end
 
+  Rake::Task['neo4j:enable_auth'].clear
   desc 'Neo4j 2.2+: Enable Auth'
   task :enable_auth, :environment do |_, args|
     args.with_defaults(environment: :development)
@@ -167,6 +181,7 @@ namespace :neo4j do
     puts 'Neo4j basic authentication enabled. Restart server to apply.'
   end
 
+  Rake::Task['neo4j:disable_auth'].clear
   desc 'Neo4j 2.2+: Disable Auth'
   task :disable_auth, :environment do |_, args|
     args.with_defaults(environment: :development)
