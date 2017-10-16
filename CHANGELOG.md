@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.18] - 10-15-2017
+
+### Fixed
+
+- Fix for clearing of tasks from 0.7.17
+
 ## [0.7.17] - 10-15-2017
 
 ### Fixed
