@@ -6,7 +6,11 @@ Rake tasks for managing a Neo4j database with your Ruby project
 Rake Tasks
 ==========
 
-The ``neo4j-rake_tasks`` gem (automatically included with the ``neo4j`` gem) includes some rake tasks which make it easy to install and manage a Neo4j server in the same directory as your Ruby project.
+The ``neo4j-rake_tasks`` gem includes some rake tasks which make it easy to install and manage a Neo4j server in the same directory as your Ruby project.
+
+WARNING: NOT FOR PRODUCTION USE!  These rake tasks are intended to make installing and managing a Neo4j server in development and testing easier.  Since authentication is disabled by default, this gem should not be used in production.  If you need Neo4j in production, installation can be as easy as downloading, unzipping, and running the executable.
+
+NOTE: The ``neo4j-rake_tasks`` gem used to be included automatically with the ``neo4j-core`` gem (which is in turn included automatically in the ``neo4j`` gem).  This is no longer the case because not everybody needs these tasks.
 
 ## neo4j:install
 
