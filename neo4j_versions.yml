@@ -1,8 +1,8 @@
 ---
-  stable: &stable '3.3.0'
+  stable: &stable '3.3.1'
   alpha: 3.4.0-alpha02
-  milestone: 3.3.0
-  rc: &rc 3.3.0
+  milestone: 3.3.1
+  rc: &rc 3.3.1
 
   # aliases
   latest: *stable
