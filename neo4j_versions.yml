@@ -2,7 +2,7 @@
   stable: &stable '3.3.5'
   alpha: 3.4.0-alpha10
   milestone: 3.3.5
-  rc: &rc 3.4.0-rc01
+  rc: &rc 3.4.0-rc02
 
   # aliases
   latest: *stable
