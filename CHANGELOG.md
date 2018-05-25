@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.7.19] - 05-25-2018
+
+### Fixed
+
+- Fix for pattern matching for jar files in Neo4j 3.4
+
 ## [0.7.18] - 10-15-2017
 
 ### Fixed
