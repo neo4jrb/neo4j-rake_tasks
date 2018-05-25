@@ -283,7 +283,7 @@ module Neo4j
 
       def server_version
         kernel_jar_path = Dir.glob(@path.join('lib/neo4j-kernel-*.jar'))[0]
-        kernel_jar_path.match(/neo4j-kernel-([\-a-zA-Z\d\.]+)\.jar$/)[1]
+        kernel_jar_path.match(/neo4j-kernel[\-a-zA-Z]*-([\-a-zA-Z\d\.]+)\.jar$/)[1]
       end
 
       def neo4j_versions
