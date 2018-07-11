@@ -1,6 +1,6 @@
 ---
   stable: &stable '3.4.1'
-  alpha: 3.5.0-alpha02
+  alpha: 3.5.0-alpha04
   milestone: 3.4.1
   rc: &rc 3.4.0-rc02
 
