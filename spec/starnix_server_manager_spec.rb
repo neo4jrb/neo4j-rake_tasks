@@ -4,7 +4,6 @@ require 'fileutils'
 require 'neo4j-core'
 require 'open-uri'
 
-require 'byebug'
 require 'neo4j/rake_tasks/starnix_server_manager'
 
 BASE_PATHNAME = Pathname.new(File.expand_path(__dir__))
@@ -176,8 +175,6 @@ module Neo4j
 
             server_manager.config_auth_enabeled!(false)
             server_manager.config_port!(neo4j_port)
-
-            byebug
 
             server_manager.start
           end

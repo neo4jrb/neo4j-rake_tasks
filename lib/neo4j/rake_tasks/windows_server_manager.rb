@@ -39,7 +39,7 @@ module Neo4j
           FileUtils.mkdir_p(File.dirname(f_path))
           begin
             file.extract(f_path) unless File.exist?(f_path)
-          rescue StandardError
+          rescue
             puts "#{file.name} failed to extract."
           end
         end
