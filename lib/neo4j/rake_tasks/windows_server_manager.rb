@@ -1,4 +1,4 @@
-require File.expand_path('../server_manager', __FILE__)
+require File.expand_path('server_manager', __dir__)
 
 module Neo4j
   module RakeTasks
@@ -24,7 +24,7 @@ module Neo4j
       def validate_is_system_admin!
         return if nt_admin?
 
-        fail 'You do not have administrative rights to stop the Neo4j Service'
+        raise 'You do not have administrative rights to stop the Neo4j Service'
       end
 
       protected
@@ -39,7 +39,7 @@ module Neo4j
           FileUtils.mkdir_p(File.dirname(f_path))
           begin
             file.extract(f_path) unless File.exist?(f_path)
-          rescue
+          rescue StandardError
             puts "#{file.name} failed to extract."
           end
         end
@@ -60,7 +60,7 @@ module Neo4j
       end
 
       def nt_admin?
-        system_or_fail('reg query "HKU\\S-1-5-19"').size > 0
+        !system_or_fail('reg query "HKU\\S-1-5-19"').empty?
       end
     end
   end
