@@ -31,6 +31,7 @@ module Neo4j
 
       def update_progress_bar(value)
         return unless @progress_bar
+
         value = @progress_bar.total >= value ? value : @progress_bar.total
         @progress_bar.progress = value
       end

@@ -4,10 +4,10 @@ gemspec
 
 group 'test' do
   gem 'coveralls', require: false
-  gem 'simplecov-html', require: false
+  gem 'guard-rspec', require: false
+  gem 'neo4j-core'
   gem 'rake'
   gem 'rspec'
   gem 'rspec-its'
-  gem 'guard-rspec', require: false
-  gem 'neo4j-core'
+  gem 'simplecov-html', require: false
 end

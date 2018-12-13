@@ -3,9 +3,8 @@
 require 'os'
 require 'zip'
 require 'pathname'
-require File.expand_path('../windows_server_manager', __FILE__)
-require File.expand_path('../starnix_server_manager', __FILE__)
-
+require File.expand_path('windows_server_manager', __dir__)
+require File.expand_path('starnix_server_manager', __dir__)
 
 namespace :neo4j do
   def clear_task_if_defined(task_name)
@@ -38,9 +37,7 @@ namespace :neo4j do
     server_manager = server_manager(args[:environment])
     server_manager.install(args[:edition])
 
-    if server_manager.supports_auth?
-      server_manager.config_auth_enabeled!(false)
-    end
+    server_manager.config_auth_enabeled!(false) if server_manager.supports_auth?
 
     puts 'To start it type one of the following:'
     puts cyanize('  rake neo4j:start')
@@ -93,7 +90,6 @@ namespace :neo4j do
   desc 'Configure Server, e.g. rake neo4j:config[development,8888]'
   task :config, :environment, :port do |_, args|
     args.with_defaults(environment: :development, port: 7474)
-
 
     puts "Config Neo4j in #{args[:environment]}"
 

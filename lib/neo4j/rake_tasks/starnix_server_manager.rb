@@ -1,4 +1,4 @@
-require File.expand_path('../server_manager', __FILE__)
+require File.expand_path('server_manager', __dir__)
 
 module Neo4j
   module RakeTasks

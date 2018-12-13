@@ -6,7 +6,7 @@ require 'open-uri'
 
 require 'neo4j/rake_tasks/starnix_server_manager'
 
-BASE_PATHNAME = Pathname.new(File.expand_path('../', __FILE__))
+BASE_PATHNAME = Pathname.new(File.expand_path(__dir__))
 
 module Neo4j
   module RakeTasks
@@ -19,7 +19,7 @@ module Neo4j
         subject { server_manager.modify_config_contents(contents, properties) }
         after(:each) { path.rmtree }
 
-        let_context properties: {prop: 2} do
+        let_context properties: { prop: 2 } do
           let_context(contents: 'prop=1') { it { should eq('prop=2') } }
           let_context(contents: 'prop =1') { it { should eq('prop=2') } }
           let_context(contents: 'prop= 1') { it { should eq('prop=2') } }
@@ -37,11 +37,11 @@ module Neo4j
         end
 
         let_context contents: 'prop=false' do
-          let_context(properties: {prop: true}) { it { should eq('prop=true') } }
+          let_context(properties: { prop: true }) { it { should eq('prop=true') } }
         end
 
         let_context contents: 'prop=true' do
-          let_context(properties: {prop: false}) { it { should eq('prop=false') } }
+          let_context(properties: { prop: false }) { it { should eq('prop=false') } }
         end
       end
 
@@ -57,14 +57,14 @@ module Neo4j
 
         before(:each) do
           if server_up(neo4j_port)
-            fail "There is a server already running on port #{neo4j_port}.  Can't run spec"
+            raise "There is a server already running on port #{neo4j_port}.  Can't run spec"
           end
 
           if path.exist?
             message = 'DB temporary directory already exists! '
             message += "Delete #{path} if safe to do so and then proceed"
 
-            fail message
+            raise message
           end
         end
 
