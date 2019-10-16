@@ -12,6 +12,20 @@ WARNING: NOT FOR PRODUCTION USE!  These rake tasks are intended to make installi
 
 NOTE: The ``neo4j-rake_tasks`` gem used to be included automatically with the ``neo4j-core`` gem (which is in turn included automatically in the ``neo4j`` gem).  This is no longer the case because not everybody needs these tasks.
 
+# Setup
+
+At the top of your `Rakefile`
+
+```
+require 'neo4j/rake_tasks'
+```
+
+Then run this on the command line to make sure the tasks are loaded.
+
+```
+$ rake -T
+```
+
 ## neo4j:install
 
 ### Arguments
