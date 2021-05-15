@@ -15,7 +15,7 @@ module Neo4j
 
       def fetch(message)
         require 'open-uri'
-        open(@url,
+        URI.parse(@url).open(
              content_length_proc: lambda do |total|
                create_progress_bar(message, total) if total && total > 0
              end,

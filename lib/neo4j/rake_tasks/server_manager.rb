@@ -290,7 +290,7 @@ module Neo4j
         require 'open-uri'
         require 'yaml'
 
-        YAML.load(open(NEO4J_VERSIONS_URL).read)
+        YAML.load(URI.parse(NEO4J_VERSIONS_URL).open(&:read))
       end
 
       def download_neo4j(version)
