@@ -1,7 +1,8 @@
+**THIS PROJECT IS NOT RECOMMENDED FOR USE**
 
-Rake tasks for managing a Neo4j database with your Ruby project
+Many tutorials use this gem to manage a set of Neo4j databases, but it is much easier and more sustainable to use the [official Neo4j Desktop app](https://neo4j.com/download/).
 
-[![Actively Maintained](https://img.shields.io/badge/Maintenance%20Level-Actively%20Maintained-green.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Abandoned-orange.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 
 Rake Tasks
 ==========
