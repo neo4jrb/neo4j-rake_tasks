@@ -26,7 +26,6 @@ DESCRIPTION
   s.require_path = 'lib'
   s.files = Dir.glob('{bin,lib,config}/**/*') +
             %w[README.md Gemfile neo4j-rake_tasks.gemspec]
-  s.has_rdoc = true
   s.extra_rdoc_files = %w[README.md]
   s.rdoc_options = [
     '--quiet',
